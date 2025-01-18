@@ -78,7 +78,9 @@ namespace VaqifQuluzada.Helpers
         private void GenerateProps()
         {
             propPrefabInstancesList.Clear();
+            propPrefabsList.Clear();
             propSocketPrefabInstancesList.Clear();
+            propSocketPrefabsList.Clear();
             propSocketPairsList.Clear();
 
             switch (prefabCrateType)
