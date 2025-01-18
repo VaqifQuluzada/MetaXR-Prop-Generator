@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2462521042515720974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3926195535818986970}
+  - component: {fileID: 8093594093182543741}
+  m_Layer: 0
+  m_Name: PropGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3926195535818986970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462521042515720974}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8093594093182543741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462521042515720974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e10090be48c1399459148deb0383536e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderType: 1
+  objectDistance: 0.1
+  isGenerateSockets: 0
+  isGeneratePrefabs: 0
+  isGenerateSocketHoverMeshes: 0
+  isVectorZeroPos: 0
+  prefabCrateType: 2
+  baseGrabbablePrefabAsset: {fileID: 5051840136106264030, guid: f0d700a78064f4f449041dc03083839b, type: 3}
+  socketPrefabCrateType: 2
+  baseSocketPrefabAsset: {fileID: 1393177850005280858, guid: 2814a35e4f1bccf43afb830259ae1f34, type: 3}
+  socketHoverMeshMat: {fileID: 2100000, guid: 774e9b6509841644a8abfbaacf5acb57, type: 2}
+  grabbablePrefabsFolderPath: Assets/App/Prefabs/Grabbables
+  grabbableSocketsFolderPath: Assets/App/Prefabs/Grabbables/Sockets
+  propVisualsList: []
+  propPrefabInstancesList: []
+  propSocketPrefabInstancesList: []
+  propSocketPrefabsList: []
+  isDisableGhostHands: 0
+  propPrefabsList: []
+  propSocketPairPrefabsFolder: Assets/App/Prefabs/Grabbables/PropSocketPair
+  snapInteractorResetTime: 0
+  isCreatePropSocketPairPrefab: 0
+  propSocketPairsList: []
