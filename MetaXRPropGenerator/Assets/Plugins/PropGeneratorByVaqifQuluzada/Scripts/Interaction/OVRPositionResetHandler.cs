@@ -1,4 +1,5 @@
 using DesignPatterns.Utilities;
+using NaughtyAttributes;
 using Oculus.Interaction.HandGrab;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace VaqifQuluzada.Handlers
             {
                 if (resetPosTransform != null)
                 {
-                    resetPosTransform.parent = GameplayConfig.ReturnDetachedElementParents();
+                    resetPosTransform.parent = PropGeneratorConfig.ReturnDetachedElementParents();
                 }
             }
 
@@ -88,6 +89,17 @@ namespace VaqifQuluzada.Handlers
         }
 
 
+
+        #endregion
+
+        #region Naughty Methods
+
+        [Button]
+        private void FindAllHandInteractables()
+        {
+            grabbablesList.Clear();
+            grabbablesList.AddRange(GetComponentsInChildren<HandGrabInteractable>().ToList());
+        }
 
         #endregion
 

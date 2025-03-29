@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 #endif
 using UnityEngine;
+using VaqifQuluzada.Config;
 
 namespace VaqifQuluzada.Helpers
 {
@@ -24,6 +25,7 @@ namespace VaqifQuluzada.Helpers
         [SerializeField] private bool isGenerateSockets = false;
         [SerializeField] private bool isGeneratePrefabs = false;
         [SerializeField] private bool isGenerateSocketHoverMeshes = false;
+
         /// <summary>
         /// This variable is used to set prefab and socket into Vector3 pos
         /// </summary>
@@ -68,10 +70,14 @@ namespace VaqifQuluzada.Helpers
 
         [SerializeField] private float snapInteractorResetTime = 0;
 
-        
         [SerializeField] private bool isCreatePropSocketPairPrefab = false;
 
         [SerializeField] private List<GameObject> propSocketPairsList = new List<GameObject>();
+
+        [SerializeField] private bool isGenerateCommonSocketTag = false;
+
+        [EnableIf(nameof(isGenerateCommonSocketTag))]
+        [SerializeField] private string commonSocketTag = "";
 
         [ContextMenu(nameof(GenerateProps))]
         [Button]
@@ -135,7 +141,7 @@ namespace VaqifQuluzada.Helpers
                 grabbable.InjectOptionalOneGrabTransformer(grabFreeTransformer);
                 grabbablePrefabParent.transform.position = propDuplicate.transform.position;
 
-                GameObject visualParent = new GameObject("Visuals");
+                GameObject visualParent = new GameObject(PropGeneratorConfig.VisualsParentName);
 
                 visualParent.transform.localPosition = Vector3.zero;
                 visualParent.transform.localRotation = Quaternion.Euler(Vector3.zero);
@@ -155,7 +161,18 @@ namespace VaqifQuluzada.Helpers
                 GameObject snapInteractorGameObject = new GameObject($"SnapInteractor");
                 SnapInteractor snapInteractor = snapInteractorGameObject.AddComponent<SnapInteractor>();
                 TagSetFilter tagSetFilter = snapInteractor.AddComponent<TagSetFilter>();
-                string[] requiredTags = new string[] { propDuplicate.name };
+
+                string[] requiredTags = new string[1];
+
+                if(isGenerateCommonSocketTag)
+                {
+                    requiredTags[0] = commonSocketTag;
+                }
+                else
+                {
+                    requiredTags[0] = propDuplicate.name;
+                }
+
                 tagSetFilter.InjectOptionalRequireTags(requiredTags);
                 List<IGameObjectFilter> tagSetFilterList = new List<IGameObjectFilter> { tagSetFilter };
                 snapInteractor.InjectOptionalInteractableFilters(tagSetFilterList);
@@ -204,7 +221,7 @@ namespace VaqifQuluzada.Helpers
             for (int i = 0; i < propVisualsList.Count; i++)
             {
                 GameObject grabbablePrefabVariantObject = (GameObject)PrefabUtility.InstantiatePrefab(baseGrabbablePrefabAsset, transform);
-                GameObject visualsChildObject = FindOrCreateObjectByName(grabbablePrefabVariantObject, "Visuals");
+                GameObject visualsChildObject = FindOrCreateObjectByName(grabbablePrefabVariantObject, PropGeneratorConfig.VisualsParentName);
 
                 GameObject prop = propVisualsList[i];
 
@@ -235,7 +252,18 @@ namespace VaqifQuluzada.Helpers
 
                 TagSetFilter tagSetFilter = grabbablePrefabVariantObject.GetComponentInChildren<TagSetFilter>();
 
-                string[] requiredTags = new string[] { propDuplicate.name };
+
+
+                string[] requiredTags = new string[1];
+
+                if(isGenerateCommonSocketTag)
+                {
+                    requiredTags[0] = commonSocketTag;
+                }
+                else
+                {
+                    requiredTags[0] = propDuplicate.name;
+                }
 
                 if (tagSetFilter != null)
                 {
@@ -324,7 +352,7 @@ namespace VaqifQuluzada.Helpers
 
             socketPrefabVariantObject.transform.position = propDuplicate.transform.position;
 
-            GameObject visualsChildObject = FindOrCreateObjectByName(socketPrefabVariantObject, "Visuals");
+            GameObject visualsChildObject = FindOrCreateObjectByName(socketPrefabVariantObject, PropGeneratorConfig.VisualsParentName);
 
             AddCollidersToSockets(socketPrefabVariantObject, propDuplicate, true);
 
@@ -368,7 +396,7 @@ namespace VaqifQuluzada.Helpers
         {
             AddColliders(objectParent, propDuplicate);
 
-            GameObject collidersParent = FindOrCreateObjectByName(objectParent, "Colliders");
+            GameObject collidersParent = FindOrCreateObjectByName(objectParent, PropGeneratorConfig.CollidersParentName);
 
             List<Collider> collidersList = collidersParent.GetComponentsInChildren<Collider>().ToList();
 
@@ -380,7 +408,7 @@ namespace VaqifQuluzada.Helpers
 
         private void AddSocketHoverMeshesToSockets(GameObject grabbableSocketParent, GameObject propDuplicate)
         {
-            GameObject visualsParent = FindOrCreateObjectByName(grabbableSocketParent, "Visuals");
+            GameObject visualsParent = FindOrCreateObjectByName(grabbableSocketParent, PropGeneratorConfig.VisualsParentName);
             visualsParent.transform.parent = grabbableSocketParent.transform;
             visualsParent.transform.localPosition = Vector3.zero;
 
@@ -432,13 +460,21 @@ namespace VaqifQuluzada.Helpers
             }
             else
             {
+
+                //If child has object we need to destroy it
+                foreach (Transform child in visualsChildTransform)
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+
+
                 return visualsChildTransform.gameObject;
             }
         }
 
         private void AddColliders(GameObject objectParent, GameObject prop)
         {
-            GameObject collidersParent = FindOrCreateObjectByName(objectParent, "Colliders");
+            GameObject collidersParent = FindOrCreateObjectByName(objectParent, PropGeneratorConfig.CollidersParentName);
 
             collidersParent.transform.localPosition = Vector3.zero;
             collidersParent.transform.localRotation = Quaternion.Euler(Vector3.zero);
@@ -574,7 +610,7 @@ namespace VaqifQuluzada.Helpers
             }
         }
 
-        
+
 
         [ContextMenu(nameof(CreatePropSocketPairs))]
         [Button]
